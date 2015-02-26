@@ -1,0 +1,24 @@
+{
+	"name": "xiewulong/yii2-fileupload",
+	"description": "file upload",
+	"keywords": ["yii2", "xiewulong", "file", "upload", "ajax"],
+	"type": "yii2-extension",
+	"license": "MIT",
+	"support": {
+		"issues": "https://github.com/xiewulong/yii2-fileupload/issues",
+		"wiki": "https://github.com/xiewulong/yii2-fileupload/wiki",
+		"source": "https://github.com/xiewulong/yii2-fileupload"
+	},
+	"authors": [
+		{
+			"name": "xiewulong",
+			"email": "xiewulong@vip.qq.com"
+		}
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+	"autoload": {
+		"psr-4": {"yii\\fileupload\\": ""}
+	}
+}
