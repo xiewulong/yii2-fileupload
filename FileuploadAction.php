@@ -55,7 +55,7 @@ class FileuploadAction extends Action{
 							$_size = explode('x', $size);
 							if(count($_size) != 2)continue;
 							$thumbnail = $this->manager->addSuf($file, $_size);
-							Image::thumbnail($file['tmp'], $_size[0], $_size[1])->save($thumbnail['tmp']);
+							Image::thumbnail($file['tmp'], $_size[0], $_size[1], 'inset')->save($thumbnail['tmp']);
 							$response['data']['t' . $size] = $thumbnail['src'];
 						}
 					}
