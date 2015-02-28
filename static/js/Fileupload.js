@@ -17,6 +17,7 @@
 			this.max = prop.max || this.$input.attr('data-max');
 			this.type = prop.type || this.$input.attr('data-type');
 			this.sizes = prop.sizes || this.$input.attr('data-sizes');
+			this.oss = prop.oss || this.$input.attr('data-oss');
 			this.csrf = prop.csrf || this.$input.attr('data-csrf');
 			this.pre = prop.pre || 'xFileupload';
 			this.before = prop.before || function(){};
@@ -44,6 +45,7 @@
 			this.max && this.$form.append('<input type="hidden" name="max" value="' + this.max + '" />');
 			this.type && this.$form.append('<input type="hidden" name="type" value="' + this.type + '" />');
 			this.sizes && this.$form.append('<input type="hidden" name="sizes" value="' + this.sizes + '" />');
+			this.oss && this.$form.append('<input type="hidden" name="oss" value="' + this.oss + '" />');
 			this.csrf && this.$form.append('<input type="hidden" name="_csrf" value="' + this.csrf + '" />');
 			this.$form.append('<input type="hidden" name="name" value="' + this.input.name + '" />');
 			this.$form.append(this.input);
@@ -54,6 +56,7 @@
 		},
 		callback: function(d){
 			this.input.name = this.name;
+			this.input.value = '';
 			this.$parent.append(this.input);
 			this.$form.remove();
 			this.$iframe.remove();
