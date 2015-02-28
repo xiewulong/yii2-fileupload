@@ -11,8 +11,11 @@
 
 namespace yii\fileupload;
 
+require_once __DIR__ . '/oss/aliyun.php';
+
 use Yii;
-use yii\fileupload\apis\AliyunOss;
+use yii\helpers\ArrayHelper;
+use Aliyun\OSS\OSSClient;
 
 class Manager{
 
@@ -20,10 +23,13 @@ class Manager{
 	public $pre = 'u_';
 
 	//缓存路径配置
-	public $tmp = '@webroot/assets/upload';
+	public $tmp = '@webroot/assets/tmp';
 
 	//访问路径
-	public $src = '@web/assets/upload';
+	public $src = '@web/assets/tmp';
+
+	//aliyun oss配置
+	public $oss = [];
 
 	//存放路径
 	private $path = false;
@@ -47,16 +53,41 @@ class Manager{
 	private $suf;
 
 	/**
+	 * 获取最终文件路径
+	 * @method putFileToOss
+	 * @since 0.0.1
+	 * @param {array} $file 文件信息
+	 * @param {string} [$type=images] bucket别名
+	 * @return {string}
+	 * @example Yii::$app->fileupload->finalFile($file, $type);
+	 */
+	public function finalFile($file, $type = 'images'){
+		return isset($this->oss[$type]) ? $this->putFileToOss($file['name'], $file['tmp'], $type) : $file['src'];
+	}
+
+	/**
 	 * 上传至oss
 	 * @method putFileToOss
 	 * @since 0.0.1
-	 * @param {string} $file 文件路径
-	 * @return {array}
-	 * @example Yii::$app->fileupload->putFileToOss($file);
+	 * @param {string} $key 文件名(包括存储路径)
+	 * @param {string} $file 文件本地路径
+	 * @param {string} [$type=images] bucket别名
+	 * @return {string|boolean}
+	 * @example Yii::$app->fileupload->putFileToOss($key, $file, $type);
 	 */
-	public function putFileToOss($file){
-		AliyunOss::sdk([])->test();
-		return $file;
+	public function putFileToOss($key, $file, $type = 'images'){
+		$src = null;
+		if(isset($this->oss[$type])){
+			OSSClient::factory($this->oss['config'])->putObject([
+				'Bucket' => $this->oss[$type]['Bucket'],
+				'Key' => $key,
+				'Content' => fopen($file, 'r'),
+				'ContentLength' => filesize($file),
+			]);
+			$src = $this->oss[$type]['src'] . DIRECTORY_SEPARATOR . $key;
+		}
+
+		return $src;
 	}
 
 	/**
@@ -118,6 +149,7 @@ class Manager{
 		return [
 			'tmp' => $this->getTmp(),
 			'src' => $this->getSrc(),
+			'name' => $this->getPath() . DIRECTORY_SEPARATOR . $this->getName(),
 		];
 	}
 
