@@ -12,6 +12,7 @@
 namespace yii\fileupload;
 
 use Yii;
+use yii\fileupload\apis\AliyunOss;
 
 class Manager{
 
@@ -44,6 +45,19 @@ class Manager{
 
 	//后缀
 	private $suf;
+
+	/**
+	 * 上传至oss
+	 * @method putFileToOss
+	 * @since 0.0.1
+	 * @param {string} $file 文件路径
+	 * @return {array}
+	 * @example Yii::$app->fileupload->putFileToOss($file);
+	 */
+	public function putFileToOss($file){
+		AliyunOss::sdk([])->test();
+		return $file;
+	}
 
 	/**
 	 * 添加后缀
