@@ -49,7 +49,7 @@ class Manager{
 	 * 添加后缀
 	 * @method addSuf
 	 * @since 0.0.1
-	 * @param {array} $file 文件名
+	 * @param {string|array} $file 文件名
 	 * @param {string|array} $size 尺寸
 	 * @return {array}
 	 * @example Yii::$app->fileupload->addSuf($file, $suf);
@@ -58,15 +58,32 @@ class Manager{
 		if(is_array($suf)){
 			$suf = implode('_', $suf);
 		}
-		foreach($file as $type => $path){
-			$path = explode('.', $path);
-			$ext = array_pop($path);
-			$path[count($path) - 1] .= '_' . $suf;
-			$path[] = $ext;
-			$file[$type] = implode('.', $path);
+		if(is_array($file)){
+			foreach($file as $type => $path){
+				$file[$type] = $this->createSuf($path, $suf);
+			}
+		}else{
+			$file = $this->createSuf($file, $suf);
 		}
 
 		return $file;
+	}
+
+	/**
+	 * 创建后缀
+	 * @method addSuf
+	 * @since 0.0.1
+	 * @param {string} $path 路径
+	 * @param {string} $suf 后缀
+	 * @return {string}
+	 */
+	private function createSuf($path, $suf){
+		$path = explode('.', $path);
+		$ext = array_pop($path);
+		$path[count($path) - 1] .= '_' . $suf;
+		$path[] = $ext;
+		
+		return implode('.', $path);
 	}
 
 	/**
