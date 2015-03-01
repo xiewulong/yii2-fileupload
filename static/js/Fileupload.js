@@ -23,20 +23,17 @@
 			this.before = prop.before || function(){};
 			this.fn = fn;
 
-			this.action && this.fn && this.init();
-		}
+			this.input.value && this.action && this.fn && this.upload();
+		};
 	
 	fileupload.prototype = {
-		init: function(){
+		upload: function(){
 			var _this = this;
-			this.$input.on('change', function(){
-				if(this.value == '')return;
-				_this.setName();
-				_this.createElements();
-				window[_this.input.name] = function(d){_this.callback(d);};
-				_this.before && _this.before.call(_this.input, _this.name);
-				_this.$form.submit();
-			});
+			this.setName();
+			this.createElements();
+			window[_this.input.name] = function(d){_this.callback(d);};
+			this.before && this.before.call(this.input, this.name);
+			this.$form.submit();
 		},
 		createElements: function(){
 			this.$iframe = $('<iframe style="display:none;" name="' + this.input.name + '"></iframe>').appendTo('body');
@@ -64,8 +61,14 @@
 		},
 	}
 
+	$(document).on('change', '[data-fileupload]', function(){
+		new fileupload(this, function(d){
+			$(this).trigger('uploaded.x.file', d);
+		});
+	});
+
 	$.fn.fileupload = function(fn, prop){
-		return this.each(function(){
+		return this.on('change', function(){
 			new fileupload(this, fn, prop);
 		});
 	};
