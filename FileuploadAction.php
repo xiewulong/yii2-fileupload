@@ -28,7 +28,7 @@ class FileuploadAction extends Action{
 		$max = $request->post('max');
 		$type = $request->post('type');
 		$sizes = $request->post('sizes');
-		$oss = $request->post('oss');
+		$oss = $request->post('oss', 'images');
 		$response = ['status' => 0, 'message' => \Yii::t('common', 'File upload failed') . ', ' . \Yii::t('common', 'Please try again')];
 
 		if(!empty($name) && !empty($_FILES)){
