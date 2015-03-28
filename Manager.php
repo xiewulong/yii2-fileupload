@@ -85,6 +85,7 @@ class Manager{
 				'ContentLength' => filesize($file),
 			]);
 			$src = $this->oss[$type]['src'] . DIRECTORY_SEPARATOR . $key;
+			unlink($file);
 		}
 
 		return $src;
@@ -137,11 +138,15 @@ class Manager{
 	 * @since 0.0.1
 	 * @param {string} $ext 扩展名
 	 * @param {string} [$suf=null] 后缀
+	 * @param {string} [$pre=null] 前缀
 	 * @return {array}
-	 * @example Yii::$app->fileupload->createFile($ext, $suf);
+	 * @example Yii::$app->fileupload->createFile($ext, $suf, $pre);
 	 */
-	public function createFile($ext, $suf = null){
+	public function createFile($ext, $suf = null, $pre = null){
 		$this->ext = $ext;
+		if(!empty($pre)){
+			$this->pre = $pre;
+		}
 		if(!empty($suf)){
 			$this->suf = $suf;
 		}

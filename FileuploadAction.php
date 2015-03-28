@@ -41,12 +41,8 @@ class FileuploadAction extends Action{
 				$response['message'] = \Yii::t('common', 'Please upload the right file type');
 			}else{
 				$manager = $this->manager;
-				$ossActive = isset($manager->oss[$oss]);
 				$file = $manager->createFile(array_pop(explode('.', $_file['name'])));
 				if(move_uploaded_file($_file['tmp_name'], $file['tmp'])){
-					$response['status'] = 1;
-					$response['message'] = \Yii::t('common', 'File upload successful');
-					$response['data'] = ['original' => $manager->finalFile($file, $oss)];
 					if(!empty($sizes)){
 						foreach(explode('|', $sizes) as $size){
 							$_size = explode('x', $size);
@@ -54,14 +50,11 @@ class FileuploadAction extends Action{
 							$thumbnail = $manager->addSuf($file, $_size);
 							Image::thumbnail($file['tmp'], $_size[0], $_size[1], 'inset')->save($thumbnail['tmp']);
 							$response['data']['t' . $size] = $manager->finalFile($thumbnail, $oss);
-							if($ossActive){
-								unlink($thumbnail['tmp']);
-							}
 						}
 					}
-					if($ossActive){
-						unlink($file['tmp']);
-					}
+					$response['status'] = 1;
+					$response['message'] = \Yii::t('common', 'File upload successful');
+					$response['data']['original'] = $manager->finalFile($file, $oss);
 				}
 			}
 		}
