@@ -12,7 +12,7 @@ class FileuploadAction extends Action{
 	private $manager;
 
 	private $types = [
-		'image' => ['image/gif', 'image/jpeg', 'image/pjpeg'],
+		'image' => ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'],
 	];
 
 	public function init(){
