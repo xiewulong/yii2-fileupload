@@ -58,7 +58,7 @@
 			this.$form.remove();
 			this.$iframe.remove();
 			this.fn.call(this.input, d);
-		},
+		}
 	}
 
 	$(document).on('change', '[data-fileupload]', function(){
