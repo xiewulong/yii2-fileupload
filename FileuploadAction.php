@@ -13,6 +13,12 @@ class FileuploadAction extends Action{
 
 	private $types = [
 		'image' => ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'],
+		'file' => [
+			'application/msword',
+			'application/vnd.ms-excel',
+			'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+		],
 	];
 
 	public function init(){
@@ -43,7 +49,7 @@ class FileuploadAction extends Action{
 				$manager = $this->manager;
 				$file = $manager->createFile(array_pop(explode('.', $_file['name'])));
 				if(move_uploaded_file($_file['tmp_name'], $file['tmp'])){
-					if(!empty($sizes)){
+					if($type == 'image' && !empty($sizes)){
 						foreach(explode('|', $sizes) as $size){
 							$_size = explode('x', $size);
 							if(count($_size) != 2)continue;
