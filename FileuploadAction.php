@@ -14,7 +14,9 @@ class FileuploadAction extends Action{
 	private $types = [
 		'image' => ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'],
 		'file' => [
+			'application/octet-stream',
 			'application/msword',
+			'application/x-xls',
 			'application/vnd.ms-excel',
 			'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
