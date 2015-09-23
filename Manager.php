@@ -5,7 +5,7 @@
  * https://github.com/xiewulong/yii2-fileupload
  * https://raw.githubusercontent.com/xiewulong/yii2-fileupload/master/LICENSE
  * create: 2015/2/28
- * update: 2015/2/28
+ * update: 2015/9/23
  * version: 0.0.1
  */
 
@@ -104,12 +104,14 @@ class Manager{
 		if(is_array($suf)){
 			$suf = implode('_', $suf);
 		}
-		if(is_array($file)){
-			foreach($file as $type => $path){
-				$file[$type] = $this->createSuf($path, $suf);
+		if(!empty($file)){
+			if(is_array($file)){
+				foreach($file as $type => $path){
+					$file[$type] = $this->createSuf($path, $suf);
+				}
+			}else{
+				$file = $this->createSuf($file, $suf);
 			}
-		}else{
-			$file = $this->createSuf($file, $suf);
 		}
 
 		return $file;
