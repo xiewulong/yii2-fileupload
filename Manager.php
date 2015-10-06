@@ -5,7 +5,7 @@
  * https://github.com/xiewulong/yii2-fileupload
  * https://raw.githubusercontent.com/xiewulong/yii2-fileupload/master/LICENSE
  * create: 2015/2/28
- * update: 2015/9/23
+ * update: 2015/10/6
  * version: 0.0.1
  */
 
@@ -59,7 +59,7 @@ class Manager{
 	 * @param {array} $file 文件信息
 	 * @param {string} [$type=images] bucket别名
 	 * @return {string}
-	 * @example Yii::$app->fileupload->finalFile($file, $type);
+	 * @example \Yii::$app->fileupload->finalFile($file, $type);
 	 */
 	public function finalFile($file, $type = 'images'){
 		return isset($this->oss[$type]) ? $this->putFileToOss($file['name'], $file['tmp'], $type) : $file['src'];
@@ -73,7 +73,7 @@ class Manager{
 	 * @param {string} $file 文件本地路径
 	 * @param {string} [$type=images] bucket别名
 	 * @return {string|boolean}
-	 * @example Yii::$app->fileupload->putFileToOss($key, $file, $type);
+	 * @example \Yii::$app->fileupload->putFileToOss($key, $file, $type);
 	 */
 	public function putFileToOss($key, $file, $type = 'images'){
 		$src = null;
@@ -98,7 +98,7 @@ class Manager{
 	 * @param {string|array} $file 文件名
 	 * @param {string|array} $size 尺寸
 	 * @return {array}
-	 * @example Yii::$app->fileupload->addSuf($file, $suf);
+	 * @example \Yii::$app->fileupload->addSuf($file, $suf);
 	 */
 	public function addSuf($file, $suf){
 		if(is_array($suf)){
@@ -142,7 +142,7 @@ class Manager{
 	 * @param {string} [$suf=null] 后缀
 	 * @param {string} [$pre=null] 前缀
 	 * @return {array}
-	 * @example Yii::$app->fileupload->createFile($ext, $suf, $pre);
+	 * @example \Yii::$app->fileupload->createFile($ext, $suf, $pre);
 	 */
 	public function createFile($ext, $suf = null, $pre = null){
 		$this->ext = $ext;
