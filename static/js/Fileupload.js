@@ -64,7 +64,7 @@
 	$(document).on('change', '[data-fileupload]', function(){
 		new fileupload(this, function(d){
 			$(this).trigger('uploaded.x.file', d);
-		}, {'before': function(name){
+		}, {'before': function(){
 			$(this).trigger('upload.x.file');
 		}});
 	});
