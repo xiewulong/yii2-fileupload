@@ -29,10 +29,10 @@
 	fileupload.prototype = {
 		upload: function(){
 			var _this = this;
+			this.before && this.before.call(this.input);
 			this.setName();
 			this.createElements();
 			window[_this.input.name] = function(d){_this.callback(d);};
-			this.before && this.before.call(this.input, this.name);
 			this.$form.submit();
 		},
 		createElements: function(){
@@ -65,7 +65,7 @@
 		new fileupload(this, function(d){
 			$(this).trigger('uploaded.x.file', d);
 		}, {'before': function(name){
-			$(this).trigger('upload.x.file', name);
+			$(this).trigger('upload.x.file');
 		}});
 	});
 
