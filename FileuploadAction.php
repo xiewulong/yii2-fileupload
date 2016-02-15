@@ -9,10 +9,17 @@ use yii\imagine\Image;
 
 class FileuploadAction extends Action{
 
+	public $defaultComponent = 'fileupload';
+
 	private $manager;
 
 	private $types = [
-		'image' => ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'],
+		'image' => [
+			'image/gif',
+			'image/jpeg',
+			'image/pjpeg',
+			'image/png',
+		],
 		'file' => [
 			'application/octet-stream',
 			'application/msword',
@@ -26,7 +33,7 @@ class FileuploadAction extends Action{
 	public function init(){
 		parent::init();
 
-		$this->manager = \Yii::createObject(Yii::$app->components['fileupload']);
+		$this->manager = \Yii::createObject(Yii::$app->components[$this->defaultComponent]);
 	}
 
 	public function run(){
