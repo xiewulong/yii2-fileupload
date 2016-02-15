@@ -33,7 +33,7 @@ class FileuploadAction extends Action{
 	public function init(){
 		parent::init();
 
-		$this->manager = \Yii::createObject(Yii::$app->components[$this->defaultComponent]);
+		$this->manager = \Yii::createObject(\Yii::$app->components[$this->defaultComponent]);
 	}
 
 	public function run(){
