@@ -5,8 +5,8 @@
  * version: 0.0.1
  */
 
-(function($, window, document, undefined){
-	var fileupload	= function(input, fn, prop){
+(function($, window, document, undefined) {
+	var fileupload	= function(input, fn, prop) {
 			prop = prop || {};
 			this.input = input;
 			this.name = input.name;
@@ -20,22 +20,22 @@
 			this.oss = prop.oss || this.$input.attr('data-oss');
 			this.csrf = prop.csrf || this.$input.attr('data-csrf');
 			this.pre = prop.pre || 'xFileupload';
-			this.before = prop.before || function(){};
+			this.before = prop.before || function() {};
 			this.fn = fn;
 
 			this.input.value && this.action && this.fn && this.upload();
 		};
 	
 	fileupload.prototype = {
-		upload: function(){
+		upload: function() {
 			var _this = this;
 			this.before && this.before.call(this.input);
 			this.setName();
 			this.createElements();
-			window[_this.input.name] = function(d){_this.callback(d);};
+			window[_this.input.name] = function(d) {_this.callback(d);};
 			this.$form.submit();
 		},
-		createElements: function(){
+		createElements: function() {
 			this.$iframe = $('<iframe style="display:none;" name="' + this.input.name + '"></iframe>').appendTo('body');
 			this.$form = $('<form style="display:none;" action="' + this.action + '" target="' + this.input.name + '" method="post" enctype="multipart/form-data"></form>').appendTo('body');
 			this.min && this.$form.append('<input type="hidden" name="min" value="' + this.min + '" />');
@@ -47,11 +47,11 @@
 			this.$form.append('<input type="hidden" name="name" value="' + this.input.name + '" />');
 			this.$form.append(this.input);
 		},
-		setName: function(){
+		setName: function() {
 			var random = (+ new Date()).toString() + Math.floor(Math.random() * 899 + 100).toString();
 			this.input.name = this.pre + random;
 		},
-		callback: function(d){
+		callback: function(d) {
 			this.input.name = this.name;
 			this.input.value = '';
 			this.$parent.append(this.input);
@@ -61,16 +61,16 @@
 		}
 	}
 
-	$(document).on('change', '[data-fileupload]', function(){
-		new fileupload(this, function(d){
+	$(document).on('change', '[data-fileupload]', function() {
+		new fileupload(this, function(d) {
 			$(this).trigger('uploaded.x.file', d);
-		}, {'before': function(){
+		}, {'before': function() {
 			$(this).trigger('upload.x.file');
 		}});
 	});
 
-	$.fn.fileupload = function(fn, prop){
-		return this.on('change', function(){
+	$.fn.fileupload = function(fn, prop) {
+		return this.on('change', function() {
 			new fileupload(this, fn, prop);
 		});
 	};
