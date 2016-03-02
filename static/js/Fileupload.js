@@ -74,4 +74,6 @@
 			new fileupload(this, fn, prop);
 		});
 	};
+
+	window.xFileupload = fileupload;
 })(jQuery, window, document);
