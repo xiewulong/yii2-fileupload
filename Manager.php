@@ -1,12 +1,12 @@
 <?php
 /*!
- * yii2 extension - file upload
+ * yii2 - extension - file upload
  * xiewulong <xiewulong@vip.qq.com>
  * https://github.com/xiewulong/yii2-fileupload
  * https://raw.githubusercontent.com/xiewulong/yii2-fileupload/master/LICENSE
  * create: 2015/2/28
- * update: 2015/10/6
- * version: 0.0.1
+ * update: 2016/8/7
+ * since: 0.0.1
  */
 
 namespace yii\fileupload;
@@ -17,7 +17,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use Aliyun\OSS\OSSClient;
 
-class Manager{
+class Manager {
 
 	//文件名前缀
 	public $pre = 'u_';
@@ -61,7 +61,7 @@ class Manager{
 	 * @return {string}
 	 * @example \Yii::$app->fileupload->finalFile($file, $type);
 	 */
-	public function finalFile($file, $type = 'images'){
+	public function finalFile($file, $type = 'images') {
 		return isset($this->oss[$type]) ? $this->putFileToOss($file['name'], $file['tmp'], $type) : $file['src'];
 	}
 
@@ -75,9 +75,9 @@ class Manager{
 	 * @return {string|boolean}
 	 * @example \Yii::$app->fileupload->putFileToOss($key, $file, $type);
 	 */
-	public function putFileToOss($key, $file, $type = 'images'){
+	public function putFileToOss($key, $file, $type = 'images') {
 		$src = null;
-		if(isset($this->oss[$type])){
+		if(isset($this->oss[$type])) {
 			OSSClient::factory($this->oss['config'])->putObject([
 				'Bucket' => $this->oss[$type]['Bucket'],
 				'Key' => $key,
@@ -100,16 +100,16 @@ class Manager{
 	 * @return {array}
 	 * @example \Yii::$app->fileupload->addSuf($file, $suf);
 	 */
-	public function addSuf($file, $suf){
-		if(is_array($suf)){
+	public function addSuf($file, $suf) {
+		if(is_array($suf)) {
 			$suf = implode('_', $suf);
 		}
-		if(!empty($file)){
-			if(is_array($file)){
-				foreach($file as $type => $path){
+		if(!empty($file)) {
+			if(is_array($file)) {
+				foreach($file as $type => $path) {
 					$file[$type] = $this->createSuf($path, $suf);
 				}
-			}else{
+			} else {
 				$file = $this->createSuf($file, $suf);
 			}
 		}
@@ -125,12 +125,12 @@ class Manager{
 	 * @param {string} $suf 后缀
 	 * @return {string}
 	 */
-	private function createSuf($path, $suf){
+	private function createSuf($path, $suf) {
 		$path = explode('.', $path);
 		$ext = array_pop($path);
 		$path[count($path) - 1] .= '_' . $suf;
 		$path[] = $ext;
-		
+
 		return implode('.', $path);
 	}
 
@@ -144,12 +144,12 @@ class Manager{
 	 * @return {array}
 	 * @example \Yii::$app->fileupload->createFile($ext, $suf, $pre);
 	 */
-	public function createFile($ext, $suf = null, $pre = null){
+	public function createFile($ext, $suf = null, $pre = null) {
 		$this->ext = $ext;
-		if(!empty($pre)){
+		if(!empty($pre)) {
 			$this->pre = $pre;
 		}
-		if(!empty($suf)){
+		if(!empty($suf)) {
 			$this->suf = $suf;
 		}
 
@@ -166,7 +166,7 @@ class Manager{
 	 * @since 0.0.1
 	 * @return {string}
 	 */
-	private function getSrc(){
+	private function getSrc() {
 		return \Yii::getAlias($this->src) . DIRECTORY_SEPARATOR . $this->getPath() . DIRECTORY_SEPARATOR . $this->getName();
 	}
 
@@ -176,10 +176,10 @@ class Manager{
 	 * @since 0.0.1
 	 * @return {string}
 	 */
-	private function getTmp(){
-		if($this->root === false){
+	private function getTmp() {
+		if($this->root === false) {
 			$this->root = \Yii::getAlias($this->tmp) . DIRECTORY_SEPARATOR . $this->getPath();
-			if(!file_exists($this->root)){
+			if(!file_exists($this->root)) {
 				mkdir($this->root, 0777, true);
 			}
 		}
@@ -193,8 +193,8 @@ class Manager{
 	 * @since 0.0.1
 	 * @return {string}
 	 */
-	private function getName(){
-		if($this->name === false){
+	private function getName() {
+		if($this->name === false) {
 			$this->name = $this->pre . $this->getTime() . '_' . md5(mt_rand()) . $this->suf . '.' . $this->ext;
 		}
 		return $this->name;
@@ -206,8 +206,8 @@ class Manager{
 	 * @since 0.0.1
 	 * @return {string}
 	 */
-	private function getPath(){
-		if($this->path === false){
+	private function getPath() {
+		if($this->path === false) {
 			$this->path = $this->timepath ? date('Y/m/d', $this->getTime()) : '';
 		}
 
@@ -220,8 +220,8 @@ class Manager{
 	 * @since 0.0.1
 	 * @return {timestamp}
 	 */
-	private function getTime(){
-		if($this->time === false){
+	private function getTime() {
+		if($this->time === false) {
 			$this->time = time();
 		}
 
