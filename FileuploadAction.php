@@ -5,7 +5,7 @@
  * https://github.com/xiewulong/yii2-fileupload
  * https://raw.githubusercontent.com/xiewulong/yii2-fileupload/master/LICENSE
  * create: 2015/2/27
- * update: 2016/8/7
+ * update: 2016/8/12
  * siace: 0.0.1
  */
 
@@ -53,7 +53,7 @@ class FileuploadAction extends Action {
 		$type = $request->post('type');
 		$sizes = $request->post('sizes');
 		$oss = $request->post('oss', 'images');
-		$response = ['status' => 0, 'message' => \Yii::t('common', 'File upload failed') . ', ' . \Yii::t('common', 'Please try again')];
+		$response = ['error' => 1, 'message' => \Yii::t('common', 'File upload failed') . ', ' . \Yii::t('common', 'Please try again')];
 
 		if(!empty($name) && !empty($_FILES)) {
 			$_file = $_FILES[$name];
@@ -65,7 +65,8 @@ class FileuploadAction extends Action {
 				$response['message'] = \Yii::t('common', 'Please upload the right file type');
 			} else {
 				$manager = $this->manager;
-				$file = $manager->createFile(array_pop(explode('.', $_file['name'])));
+				$nameArr = explode('.', $_file['name']);
+				$file = $manager->createFile(array_pop($nameArr));
 				if(move_uploaded_file($_file['tmp_name'], $file['tmp'])) {
 					if($type == 'image' && !empty($sizes)) {
 						foreach(explode('|', $sizes) as $size) {
@@ -76,7 +77,7 @@ class FileuploadAction extends Action {
 							$response['data']['t' . $size] = $manager->finalFile($thumbnail, $oss);
 						}
 					}
-					$response['status'] = 1;
+					$response['error'] = 0;
 					$response['message'] = \Yii::t('common', 'File upload successful');
 					$response['data']['original'] = $manager->finalFile($file, $oss);
 				}

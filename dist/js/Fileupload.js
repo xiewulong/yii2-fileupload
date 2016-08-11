@@ -18,14 +18,17 @@
 			this.type = prop.type || this.$input.attr('data-type');
 			this.sizes = prop.sizes || this.$input.attr('data-sizes');
 			this.oss = prop.oss || this.$input.attr('data-oss');
-			this.csrf = prop.csrf || this.$input.attr('data-csrf');
+			this.csrf = {
+				param: prop.csrf_param || this.$input.attr('data-csrf-param') || '_csrf',
+				token: prop.csrf_token || this.$input.attr('data-csrf-token'),
+			};
 			this.pre = prop.pre || 'xFileupload';
 			this.before = prop.before || function() {};
 			this.fn = fn;
 
 			this.input.value && this.action && this.fn && this.upload();
 		};
-	
+
 	fileupload.prototype = {
 		upload: function() {
 			var _this = this;
@@ -43,7 +46,7 @@
 			this.type && this.$form.append('<input type="hidden" name="type" value="' + this.type + '" />');
 			this.sizes && this.$form.append('<input type="hidden" name="sizes" value="' + this.sizes + '" />');
 			this.oss && this.$form.append('<input type="hidden" name="oss" value="' + this.oss + '" />');
-			this.csrf && this.$form.append('<input type="hidden" name="_csrf" value="' + this.csrf + '" />');
+			this.csrf.token && this.$form.append('<input type="hidden" name="' + this.csrf.param + '" value="' + this.csrf.token + '" />');
 			this.$form.append('<input type="hidden" name="name" value="' + this.input.name + '" />');
 			this.$form.append(this.input);
 		},
@@ -64,9 +67,11 @@
 	$(document).on('change', '[data-fileupload]', function() {
 		new fileupload(this, function(d) {
 			$(this).trigger('uploaded.x.file', d);
-		}, {'before': function() {
-			$(this).trigger('upload.x.file');
-		}});
+		}, {
+			'before': function() {
+				$(this).trigger('upload.x.file');
+			}
+		});
 	});
 
 	$.fn.fileupload = function(fn, prop) {

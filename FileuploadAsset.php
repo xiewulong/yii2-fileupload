@@ -22,4 +22,8 @@ class FileuploadAsset extends AssetBundle {
 		'js/Fileupload.js',
 	];
 
+	public $depends = [
+		'yii\xui\JqueryAsset',
+	];
+
 }
