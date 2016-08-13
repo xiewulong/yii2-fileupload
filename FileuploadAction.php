@@ -5,7 +5,7 @@
  * https://github.com/xiewulong/yii2-fileupload
  * https://raw.githubusercontent.com/xiewulong/yii2-fileupload/master/LICENSE
  * create: 2015/2/27
- * update: 2016/8/12
+ * update: 2016/8/14
  * siace: 0.0.1
  */
 
@@ -65,8 +65,8 @@ class FileuploadAction extends Action {
 				$response['message'] = \Yii::t('common', 'Please upload the right file type');
 			} else {
 				$manager = $this->manager;
-				$nameArr = explode('.', $_file['name']);
-				$file = $manager->createFile(array_pop($nameArr));
+				$nameList = explode('.', $_file['name']);
+				$file = $manager->createFile(array_pop($nameList));
 				if(move_uploaded_file($_file['tmp_name'], $file['tmp'])) {
 					if($type == 'image' && !empty($sizes)) {
 						foreach(explode('|', $sizes) as $size) {
